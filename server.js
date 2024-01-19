@@ -1,6 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const dotenv = require("dotenv");
+const mySqlPool = require("./config/db");
 
 dotenv.config();
 //rest object
@@ -17,6 +18,17 @@ app.get("/test", (req, res) => {
 //port
 const PORT = process.env.PORT || 8080;
 
-app.listen(PORT, () => {
-  console.log(`server is running on port ${PORT}`);
-});
+//conditionaly listen
+mySqlPool
+  .query("SELECT 1")
+  .then(() => {
+    //mysql
+    console.log("db connected");
+    //listen
+    app.listen(PORT, () => {
+      console.log(`server is running on port ${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.log(error);
+  });
