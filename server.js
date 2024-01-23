@@ -11,6 +11,9 @@ const app = express();
 app.use(express.json());
 app.use(morgan("dev"));
 
+//routes
+app.use("/api/v1/students", require("./routes/studentsRoutes"));
+
 app.get("/test", (req, res) => {
   res.status(200).send("<h1>Hello nodejs with sql</h1>");
 });
